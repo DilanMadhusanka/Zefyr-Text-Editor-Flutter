@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
@@ -8,7 +10,6 @@ class EditorPage extends StatefulWidget {
 }
 
 class _EditorPageState extends State<EditorPage> {
-
   ZefyrController _controller;
   FocusNode _focusNode;
 
@@ -32,6 +33,7 @@ class _EditorPageState extends State<EditorPage> {
         title: Text("Create Note"),
       ),
       body: Container(
+        padding: EdgeInsets.all(10.0),
         child: ZefyrScaffold(
           child: ZefyrEditor(
             padding: EdgeInsets.all(5.0),
@@ -39,7 +41,23 @@ class _EditorPageState extends State<EditorPage> {
             focusNode: _focusNode,
           ),
         ),
-      )
+      ),
+      floatingActionButton: Builder(
+        builder: (BuildContext context) {
+          return FloatingActionButton(
+            child: Icon(Icons.save),
+            backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+            onPressed: () {
+              save();
+            },
+          );
+        },
+      ),
     );
+  }
+
+  void save() {
+    final content = jsonEncode(_controller.document);
+    debugPrint(content);
   }
 }
